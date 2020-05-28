@@ -1,5 +1,8 @@
 ## React Infinite Scroll
 
+### `live demo`
+https://react-imglazy-firebase.web.app/
+
 ### `development`
 - Create firebase's project and set firebase's configuration in `.env` file
 - run `npm install` to set up dependencies
