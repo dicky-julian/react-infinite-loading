@@ -1,65 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { getImageUrl } from '../config/firebase';
+import Image from './Image';
 
-class ImageContainer extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            data__limit: 0,
-            status__limit: 0
+const ImageContainer = () => {
+    const [limit, setLimit] = useState(0);
+    const [data, setData] = useState([]);
+
+    window.onload = () => {
+        getImages();
+    }
+
+    window.onscroll = () => {
+        if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
+            getLimit();
         }
+    }
 
-        this.setLimit = this.setLimit.bind(this);
-        this.getImages = this.getImages.bind(this);
+    const getLimit = () => {
+        let newLimit = limit + 4;
+        setLimit(newLimit);
+        getImages();
+    }
 
-        window.onscroll = () => {
-            if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight && this.state.status__limit < 1) {
-                this.setLimit();
+    async function getImages() {
+        let result = await getImageUrl(limit);
+
+        if (result != null) {
+            setData([...data, ...result]);
+        }
+        console.log(data);
+    }
+
+    return (
+        <div>
+            {
+                data.map((image, key) => <Image src={image.url} key={key} />)
             }
-        }
-    }
-
-    setLimit = () => {
-        let limit = this.state.data__limit + 4;
-        this.setState({ data__limit: limit }, () => {
-            this.getImages()
-        })
-    }
-
-    getImages = () => {
-        let container = document.getElementsByClassName("image__container")[0];
-        let that = this;
-
-        getImageUrl(this.state.data__limit)
-            .then(function (images) {
-                if (images != null) {
-                    images.map(function (image) {
-                        container.innerHTML += `
-                            <div class="image" style="background-image: url(${image.url})"></div>
-                        `;
-
-                        return ''
-                    });
-                } else {
-                    that.setState({ status__limit: 1 });
-                    container.innerHTML += `
-                        <h1>Can't load more data</h1>
-                    `;
-                }
-            })
-    }
-
-    componentDidMount() {
-        this.getImages();
-    }
-
-    render() {
-        return (
-            <div>
-                <div className="image__container"></div>
-            </div>
-        )
-    }
+        </div>
+    )
 }
 
 export default ImageContainer;

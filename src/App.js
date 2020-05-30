@@ -1,10 +1,10 @@
 import React from 'react';
-import ImageContainer from './components/ImageContainer';
+import ImageContainers from './components/ImageContainers';
 
 function App() {
   return (
-    <div className="App">
-      <ImageContainer />
+    <div className="app">
+      <ImageContainers />
     </div>
   );
 }
