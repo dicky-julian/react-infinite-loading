@@ -1,6 +1,8 @@
 import React from 'react';
 import { getImageUrl } from '../config/firebase';
 import Image from './Image';
+import { SimpleImg } from 'react-simple-img';
+import placeholder from '../placeholder.png';
 
 class ImageContainer extends React.Component {
     constructor(props) {
@@ -13,18 +15,7 @@ class ImageContainer extends React.Component {
         this.setLimit = this.setLimit.bind(this);
         this.getImages = this.getImages.bind(this);
 
-        window.onscroll = () => {
-            if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
-                this.setLimit();
-            }
-        }
-    }
-
-    setLimit = () => {
-        let limit = this.state.data__limit + 4;
-        this.setState({ data__limit: limit }, () => {
-            this.getImages()
-        })
+        this.wrapper = React.createRef();
     }
 
     async getImages() {
@@ -36,15 +27,34 @@ class ImageContainer extends React.Component {
         console.log(this.state.data);
     }
 
+    setLimit = () => {
+        let limit = this.state.data__limit + 4;
+        this.setState({ data__limit: limit }, () => {
+            this.getImages()
+        })
+    }
+
+    setInfiniteScoll = () => {
+        window.onscroll = () => {
+            if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
+                this.setLimit();
+            }
+        }
+    }
+
     componentDidMount() {
         this.getImages();
+        this.setInfiniteScoll();
     }
 
     render() {
         return (
             <div className="image__container">
                 {
-                    this.state.data.map((image, key) => <Image src={image.url} key={key} />)
+                    this.state.data.map((image, key) =>
+                        <SimpleImg height={350} className="image" src={image.url} key={key} placeholder={placeholder} importance="low" />
+                            // <Image className="image" src={image.url} key={key} />
+                    )
                 }
             </div>
         )

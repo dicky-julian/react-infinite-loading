@@ -24,3 +24,9 @@ button {
   border-radius: 5px;
   cursor: pointer;
 }
+
+.placeholder {
+  width: 350px;
+  height: 350px;
+  background: rgb(202, 202, 202);
+}
