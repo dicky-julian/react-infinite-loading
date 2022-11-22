@@ -9,7 +9,7 @@
     "firebase": "^7.14.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1",
+    "react-scripts": "5.0.1",
     "react-simple-img": "^2.3.9"
   },
   "scripts": {
